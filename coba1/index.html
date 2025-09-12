@@ -40,29 +40,80 @@
             background-color: #e0e0e0;
             margin: 0;
             padding: 0;
-            counter-reset: page;
         }
 
-        .page {
+        @page {
+            size: B5;
+            margin: 20mm;
+        }
+
+        .book-container {
+             /* Wrapper for all book content */
+        }
+        
+        .page-view {
             background: white;
             width: 176mm;
-            min-height: 250mm;
             padding: 20mm;
             margin: 1cm auto;
             box-shadow: 0 0 10px rgba(0,0,0,0.2);
-            position: relative;
-            display: flex;
-            flex-direction: column;
+            min-height: 250mm;
+        }
+
+        @media screen {
+            .page-view {
+                position: relative;
+            }
+             .page-view::before {
+                content: '';
+                background-image: url('https://imgix3.ruangguru.com/assets/miscellaneous/png_tiy3nf_6017.png');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 12cm;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 100%;
+                height: 100%;
+                opacity: 0.08;
+                z-index: 0;
+                pointer-events: none;
+            }
+            .cover-page::before, .toc-page::before {
+                 opacity: 0;
+            }
         }
         
-        .page::after {
-            counter-increment: page;
-            content: counter(page);
-            position: absolute;
-            bottom: 15mm;
-            right: 20mm;
-            font-size: 10pt;
-            color: #888;
+        @media print {
+            body {
+                background: none;
+            }
+            .page-view {
+                width: auto;
+                height: auto;
+                min-height: unset;
+                margin: 0;
+                box-shadow: none;
+                padding: 0;
+            }
+
+            h1, h2, h3 {
+                break-after: avoid;
+            }
+
+            .section-start {
+                 break-before: page;
+            }
+
+            .soal-item, .pembahasan, .latihan-item {
+                break-inside: avoid;
+            }
+            
+            /* FIX: Mencegah MathJax menjadi tebal saat di-print */
+            mjx-container {
+                font-weight: normal !important;
+            }
         }
 
         .cover-page {
@@ -74,18 +125,14 @@
             border: 3px solid #444;
             height: 250mm;
         }
-        
-        .cover-page::after, .toc-page::after {
-            content: ''; /* No page number on cover and TOC */
-        }
 
         .cover-page img {
-            max-width: 300px; /* Logo enlarged */
+            max-width: 300px;
             margin-bottom: 40px;
         }
 
         .cover-page .title {
-            font-size: 42pt; /* Title enlarged */
+            font-size: 42pt;
             font-weight: 900;
             margin: 0;
             color: var(--title-grad-2);
@@ -97,50 +144,10 @@
         }
 
         .cover-page .subtitle {
-            font-size: 18pt; /* Subtitle enlarged */
+            font-size: 18pt;
             margin-top: 15px;
             color: var(--secondary-text);
             font-weight: 700;
-        }
-
-        @media print {
-            body {
-                background: none;
-            }
-            .page {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                box-shadow: none;
-                page-break-after: always;
-            }
-        }
-        
-        .watermark-container .page::before {
-            content: '';
-            background-image: url('https://imgix3.ruangguru.com/assets/miscellaneous/png_tiy3nf_6017.png');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 12cm;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            opacity: 0.08;
-            z-index: 0;
-            pointer-events: none;
-        }
-        
-        .cover-page::before, .toc-page::before {
-            opacity: 0; /* No watermark on cover and TOC */
-        }
-
-        .content-wrapper {
-            position: relative;
-            z-index: 1;
-            width: 100%;
         }
         
         h1 {
@@ -182,14 +189,11 @@
 
         .soal-item, .soal-latihan {
              margin-bottom: 20px;
-             break-inside: avoid;
-             overflow-wrap: break-word; /* Prevents overflow */
-             word-wrap: break-word; /* Prevents overflow */
+             overflow-wrap: break-word;
+             word-wrap: break-word;
         }
 
-        .pilihan-ganda-container {
-            padding-left: 20px; /* Indent options */
-        }
+        .pilihan-ganda-container { padding-left: 20px; }
         
         .pembahasan { background-color: #f9f9f9; border: 1px solid var(--border-color); padding: 15px; border-radius: 5px; margin-top: 10px; }
         
@@ -226,76 +230,70 @@
 </head>
 <body>
 
-<div class="watermark-container">
+<div class="book-container">
 
     <!-- Cover Page -->
-    <section class="page cover-page">
-        <div class="content-wrapper">
-            <img src="https://imgix3.ruangguru.com/assets/miscellaneous/png_tiy3nf_6017.png" alt="Math Specialist Logo">
-            <h1 class="title">KODE RAHASIA TKA</h1>
-            <p class="subtitle">Bongkar Logika Matematika Lanjut & Raih Skor Impianmu!</p>
-        </div>
+    <section class="page-view cover-page section-start">
+        <img src="https://imgix3.ruangguru.com/assets/miscellaneous/png_tiy3nf_6017.png" alt="Math Specialist Logo">
+        <h1 class="title">KODE RAHASIA TKA</h1>
+        <p class="subtitle">Bongkar Logika Matematika Lanjut & Raih Skor Impianmu!</p>
     </section>
 
     <!-- Table of Contents -->
-    <section class="page toc-page">
-        <div class="content-wrapper">
-            <h1>Daftar Isi</h1>
-            <ul class="toc-list">
-                <li><a href="#matriks">Topik 1: Matriks</a></li>
-                <li><a href="#polinomial">Topik 2: Polinomial</a></li>
-                <li><a href="#fungsi">Topik 3: Fungsi</a></li>
-                <li><a href="#vektor">Topik 4: Vektor</a></li>
-                <li><a href="#lingkaran">Topik 5: Lingkaran</a></li>
-                <li><a href="#transformasi">Topik 6: Transformasi Geometri</a></li>
-                <li><a href="#limit">Topik 7: Limit</a></li>
-            </ul>
-        </div>
+    <section class="page-view toc-page section-start">
+        <h1>Daftar Isi</h1>
+        <ul class="toc-list">
+            <li><a href="#matriks">Topik 1: Matriks</a></li>
+            <li><a href="#polinomial">Topik 2: Polinomial</a></li>
+            <li><a href="#fungsi">Topik 3: Fungsi</a></li>
+            <li><a href="#vektor">Topik 4: Vektor</a></li>
+            <li><a href="#lingkaran">Topik 5: Lingkaran</a></li>
+            <li><a href="#transformasi">Topik 6: Transformasi Geometri</a></li>
+            <li><a href="#limit">Topik 7: Limit</a></li>
+        </ul>
     </section>
 
-    <!-- Topik 1: Matriks -->
-    <section id="matriks" class="page">
-      <div class="content-wrapper">
-        <h2>Topik 1: Matriks</h2>
-        <h3>1. Materi Singkat</h3>
-        <div class="layout-1-kolom">
-            <p>Matriks adalah susunan bilangan, simbol, atau ekspresi, yang disusun dalam baris dan kolom sehingga membentuk suatu bangun persegi. Ukuran sebuah matriks ditentukan oleh jumlah baris dan kolomnya, disebut sebagai ordo $m \times n$.</p>
-            <h4>Operasi Matriks</h4>
-            <ul>
-                <li><b>Penjumlahan & Pengurangan:</b> Hanya bisa dilakukan pada matriks dengan ordo yang sama. Caranya adalah dengan menjumlahkan atau mengurangkan elemen-elemen yang seletak. Jika $C=A+B$, maka $c_{ij} = a_{ij} + b_{ij}$.</li>
-                <li><b>Perkalian Skalar:</b> Mengalikan sebuah bilangan skalar $k$ dengan setiap elemen matriks. Jika $B=kA$, maka $b_{ij} = k \cdot a_{ij}$.</li>
-                <li><b>Perkalian Matriks:</b> Perkalian matriks $A_{m \times n}$ dengan $B_{n \times p}$ menghasilkan matriks $C_{m \times p}$. Syaratnya, jumlah kolom matriks A harus sama dengan jumlah baris matriks B. Elemen $c_{ij}$ didapat dari perkalian titik antara baris ke-$i$ dari A dan kolom ke-$j$ dari B.</li>
-            </ul>
-             <h4>Determinan Matriks Persegi</h4>
-             <p>Determinan adalah sebuah nilai skalar yang bisa dihitung dari elemen-elemen sebuah matriks persegi. Notasi determinan A adalah $|A|$ atau det(A).</p>
-            <ul>
-                <li>Untuk ordo $2 \times 2$, $A = \begin{pmatrix} a & b \\ c & d \end{pmatrix}$, maka $|A| = ad - bc$.</li>
-                <li>Untuk ordo $3 \times 3$, $B = \begin{pmatrix} a & b & c \\ d & e & f \\ g & h & i \end{pmatrix}$, determinan dapat dihitung dengan Aturan Sarrus: $|B| = (aei + bfg + cdh) - (ceg + afh + bdi)$.</li>
-            </ul>
-            <b>Sifat Determinan:</b>
-            <ul>
-                <li>$|A^T| = |A|$</li>
-                <li>$|AB|=|A||B|$</li>
-                <li>$|kA| = k^n|A|$ untuk matriks ordo $n \times n$.</li>
-                <li>$|A^{-1}|=1/|A|$</li>
-            </ul>
-            <h4>Invers Matriks</h4>
-            <p>Matriks yang memiliki invers disebut matriks non-singular ($|A| \neq 0$), sedangkan yang tidak memiliki invers disebut matriks singular ($|A|=0$). Invers dari A, dinotasikan $A^{-1}$, memenuhi $A \cdot A^{-1} = A^{-1} \cdot A = I$, dimana $I$ adalah matriks identitas.</p>
-             <ul>
-                <li>Untuk ordo $2 \times 2$, $A^{-1} = \frac{1}{|A|} \begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$.</li>
-            </ul>
-            <b>Sifat Invers:</b>
-            <ul>
-                <li>$(AB)^{-1} = B^{-1}A^{-1}$</li>
-                <li>$(A^{-1})^{-1}=A$</li>
-                <li>$(A^T)^{-1} = (A^{-1})^T$</li>
-            </ul>
-        </div>
-      </div>
-    </section>
-
-    <section class="page">
-        <div class="content-wrapper">
+    <!-- KONTEN BUKU (DIBUNGKUS DALAM 1 DIV AGAR KONTEN MENYATU) -->
+    <div id="book-content" class="page-view">
+    
+        <!-- Topik 1: Matriks -->
+        <section id="matriks" class="section-start">
+            <h2>Topik 1: Matriks</h2>
+            <h3>1. Materi Singkat</h3>
+            <div class="layout-1-kolom">
+                <p>Matriks adalah susunan bilangan, simbol, atau ekspresi, yang disusun dalam baris dan kolom sehingga membentuk suatu bangun persegi. Ukuran sebuah matriks ditentukan oleh jumlah baris dan kolomnya, disebut sebagai ordo $m \times n$.</p>
+                <h4>Operasi Matriks</h4>
+                <ul>
+                    <li><b>Penjumlahan & Pengurangan:</b> Hanya bisa dilakukan pada matriks dengan ordo yang sama. Caranya adalah dengan menjumlahkan atau mengurangkan elemen-elemen yang seletak. Jika $C=A+B$, maka $c_{ij} = a_{ij} + b_{ij}$.</li>
+                    <li><b>Perkalian Skalar:</b> Mengalikan sebuah bilangan skalar $k$ dengan setiap elemen matriks. Jika $B=kA$, maka $b_{ij} = k \cdot a_{ij}$.</li>
+                    <li><b>Perkalian Matriks:</b> Perkalian matriks $A_{m \times n}$ dengan $B_{n \times p}$ menghasilkan matriks $C_{m \times p}$. Syaratnya, jumlah kolom matriks A harus sama dengan jumlah baris matriks B. Elemen $c_{ij}$ didapat dari perkalian titik antara baris ke-$i$ dari A dan kolom ke-$j$ dari B.</li>
+                </ul>
+                 <h4>Determinan Matriks Persegi</h4>
+                 <p>Determinan adalah sebuah nilai skalar yang bisa dihitung dari elemen-elemen sebuah matriks persegi. Notasi determinan A adalah $|A|$ atau det(A).</p>
+                <ul>
+                    <li>Untuk ordo $2 \times 2$, $A = \begin{pmatrix} a & b \\ c & d \end{pmatrix}$, maka $|A| = ad - bc$.</li>
+                    <li>Untuk ordo $3 \times 3$, $B = \begin{pmatrix} a & b & c \\ d & e & f \\ g & h & i \end{pmatrix}$, determinan dapat dihitung dengan Aturan Sarrus: $|B| = (aei + bfg + cdh) - (ceg + afh + bdi)$.</li>
+                </ul>
+                <b>Sifat Determinan:</b>
+                <ul>
+                    <li>$|A^T| = |A|$</li>
+                    <li>$|AB|=|A||B|$</li>
+                    <li>$|kA| = k^n|A|$ untuk matriks ordo $n \times n$.</li>
+                    <li>$|A^{-1}|=1/|A|$</li>
+                </ul>
+                <h4>Invers Matriks</h4>
+                <p>Matriks yang memiliki invers disebut matriks non-singular ($|A| \neq 0$), sedangkan yang tidak memiliki invers disebut matriks singular ($|A|=0$). Invers dari A, dinotasikan $A^{-1}$, memenuhi $A \cdot A^{-1} = A^{-1} \cdot A = I$, dimana $I$ adalah matriks identitas.</p>
+                 <ul>
+                    <li>Untuk ordo $2 \times 2$, $A^{-1} = \frac{1}{|A|} \begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$.</li>
+                </ul>
+                <b>Sifat Invers:</b>
+                <ul>
+                    <li>$(AB)^{-1} = B^{-1}A^{-1}$</li>
+                    <li>$(A^{-1})^{-1}=A$</li>
+                    <li>$(A^T)^{-1} = (A^{-1})^T$</li>
+                </ul>
+            </div>
+            
             <h3>2. Contoh Soal</h3>
             <div class="layout-1-kolom">
                 <div class="soal-item">
@@ -347,14 +345,7 @@
                         <b>Jawaban yang benar adalah A.</b>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="page">
-        <div class="content-wrapper">
-             <div class="layout-1-kolom">
-                 <div class="soal-item">
+                <div class="soal-item">
                     <div class="keterangan-soal">Level: Penalaran | Tipe: Kecukupan Data</div>
                     <b>Soal 3.</b> Diberikan sistem persamaan linear $ax+by=1$ dan $cx+dy=0$. Apakah sistem ini memiliki solusi unik?
                     <div class="kecukupan-data-stmt">(1) $ad-bc \neq 0$.</div>
@@ -459,11 +450,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <section class="page">
-        <div class="content-wrapper">
             <h3>3. Latihan Soal</h3>
             <p>Kerjakan soal-soal berikut. Gunakan kolom di sebelah kanan untuk corat-coret.</p>
             <div class="layout-latihan">
@@ -472,12 +459,6 @@
                 <div class="latihan-item"><div class="soal-latihan"><div class="keterangan-soal">Level: Penalaran | Tipe: Kecukupan Data</div><b>3.</b> Matriks $A$ berordo $2 \times 2$. Apakah matriks $A$ memiliki invers? <div class="kecukupan-data-stmt">(1) $A^2 = A$.</div> <div class="kecukupan-data-stmt">(2) $A \neq \begin{pmatrix} 0 & 0 \\ 0 & 0 \end{pmatrix}$.</div> <div class="pilihan-ganda-container"><ol class="pilihan-ganda"><li data-option="A">Pernyataan (1) SAJA cukup.</li><li data-option="B">Pernyataan (2) SAJA cukup.</li><li data-option="C">DUA pernyataan BERSAMA-SAMA cukup.</li><li data-option="D">SALAH SATU pernyataan SAJA cukup.</li><li data-option="E">(1) dan (2) tidak cukup.</li></ol></div></div><div class="coret-coret"></div></div>
                 <div class="latihan-item"><div class="soal-latihan"><div class="keterangan-soal">Level: Aplikasi | Tipe: Pilihan Ganda</div><b>4.</b> Sebuah toko kue menjual dua jenis paket: Paket A (3 nastar, 2 kastengel) dan Paket B (1 nastar, 3 kastengel). Stok yang tersedia adalah 120 nastar dan 110 kastengel. Jika $x$ adalah jumlah Paket A dan $y$ adalah jumlah Paket B, model matriks yang sesuai adalah...<div class="pilihan-ganda-container"><ol class="pilihan-ganda"><li data-option="A">$\begin{pmatrix}3&2\\1&3\end{pmatrix}\begin{pmatrix}x\\y\end{pmatrix} \le \begin{pmatrix}120\\110\end{pmatrix}$</li><li data-option="B">$\begin{pmatrix}3&1\\2&3\end{pmatrix}\begin{pmatrix}x\\y\end{pmatrix} \le \begin{pmatrix}120\\110\end{pmatrix}$</li><li data-option="C">$\begin{pmatrix}x&y\end{pmatrix}\begin{pmatrix}3&2\\1&3\end{pmatrix} \le \begin{pmatrix}120&110\end{pmatrix}$</li><li data-option="D">$\begin{pmatrix}3&1\\2&3\end{pmatrix}\begin{pmatrix}x\\y\end{pmatrix} \ge \begin{pmatrix}120\\110\end{pmatrix}$</li><li data-option="E">$\begin{pmatrix}3&2\\1&3\end{pmatrix}\begin{pmatrix}x\\y\end{pmatrix} = \begin{pmatrix}120\\110\end{pmatrix}$</li></ol></div></div><div class="coret-coret"></div></div>
                 <div class="latihan-item"><div class="soal-latihan"><div class="keterangan-soal">Level: Penalaran | Tipe: Pilihan Ganda Kompleks</div><b>5.</b> Mana sajakah matriks di bawah ini yang jika dikuadratkan hasilnya adalah matriks identitas? <b>(bisa pilih lebih dari satu jawaban)</b><div class="pilihan-ganda-container"><ol class="pilihan-ganda"><li data-option="A">$\begin{pmatrix}0&1\\1&0\end{pmatrix}$</li><li data-option="B">$\begin{pmatrix}-1&0\\0&-1\end{pmatrix}$</li><li data-option="C">$\begin{pmatrix}1&1\\0&1\end{pmatrix}$</li><li data-option="D">$\begin{pmatrix}1&0\\0&1\end{pmatrix}$</li><li data-option="E">$\begin{pmatrix}0&-1\\1&0\end{pmatrix}$</li></ol></div></div><div class="coret-coret"></div></div>
-            </div>
-    </section>
-    
-    <section class="page">
-        <div class="content-wrapper">
-            <div class="layout-latihan">
                 <div class="latihan-item"><div class="soal-latihan"><div class="keterangan-soal">Level: Penalaran | Tipe: Pilihan Ganda</div><b>6.</b> Diberikan matriks $P$ dan $Q$ berordo $2 \times 2$. Jika $PQ=\begin{pmatrix}1&0\\0&1\end{pmatrix}$, maka...<div class="pilihan-ganda-container"><ol class="pilihan-ganda"><li data-option="A">$P$ adalah invers dari $Q$</li><li data-option="B">$Q$ adalah invers dari $P$</li><li data-option="C">$P=Q^{-1}$</li><li data-option="D">$QP=I$</li><li data-option="E">Semua jawaban benar</li></ol></div></div><div class="coret-coret"></div></div>
                 <div class="latihan-item"><div class="soal-latihan"><div class="keterangan-soal">Level: Aplikasi | Tipe: Pilihan Ganda</div><b>7.</b> Luas segitiga dengan titik sudut $(1,1), (4,2), (2,5)$ dapat dihitung menggunakan determinan. Jika titik-titik sudutnya adalah $(x_1, y_1), (x_2, y_2), (x_3, y_3)$, Luas $= \frac{1}{2} \left| \det \begin{pmatrix} x_1 & y_1 & 1 \\ x_2 & y_2 & 1 \\ x_3 & y_3 & 1 \end{pmatrix} \right|$. Luas segitiga tersebut adalah...<div class="pilihan-ganda-container"><ol class="pilihan-ganda"><li data-option="A">5.5</li><li data-option="B">6.5</li><li data-option="C">11</li><li data-option="D">13</li><li data-option="E">22</li></ol></div></div><div class="coret-coret"></div></div>
                 <div class="latihan-item"><div class="soal-latihan"><div class="keterangan-soal">Level: Penalaran | Tipe: Pilihan Ganda</div><b>8.</b> Matriks A berordo $3 \times 3$ dan $|A|=-3$. Nilai dari $|-2A|$ adalah...<div class="pilihan-ganda-container"><ol class="pilihan-ganda"><li data-option="A">6</li><li data-option="B">12</li><li data-option="C">-12</li><li data-option="D">24</li><li data-option="E">-24</li></ol></div></div><div class="coret-coret"></div></div>
@@ -496,12 +477,8 @@
                 <div class="latihan-item"><div class="soal-latihan"><div class="keterangan-soal">Level: Penalaran | Tipe: Pilihan Ganda</div><b>14.</b> Jika $A, B, C$ adalah matriks $2 \times 2$ dengan $B$ non-singular dan $AB=BC$, manakah kesimpulan yang selalu benar?<div class="pilihan-ganda-container"><ol class="pilihan-ganda"><li data-option="A">$A=C$</li><li data-option="B">$A=BCB^{-1}$</li><li data-option="C">$A=B^{-1}CB$</li><li data-option="D">$|A|=|C|$</li><li data-option="E">Tidak ada jawaban yang pasti benar</li></ol></div></div><div class="coret-coret"></div></div>
                 <div class="latihan-item"><div class="soal-latihan"><div class="keterangan-soal">Level: Aplikasi | Tipe: Pilihan Ganda</div><b>15.</b> Sebuah pesan "HI" dikodekan menggunakan matriks enkripsi $E = \begin{pmatrix}2&1\\1&1\end{pmatrix}$. Jika A=1, B=2, ..., maka pesan "HI" direpresentasikan sebagai matriks kolom $P = \begin{pmatrix}8\\9\end{pmatrix}$. Pesan terenkripsi adalah $C=EP$. Pesan yang diterima adalah $\begin{pmatrix}25\\17\end{pmatrix}$. Pesan aslinya adalah...<div class="pilihan-ganda-container"><ol class="pilihan-ganda"><li data-option="A">GO</li><li data-option="B">HI</li><li data-option="C">OK</li><li data-option="D">NO</li><li data-option="E">ME</li></ol></div></div><div class="coret-coret"></div></div>
             </div>
-        </div>
-    </section>
-        
-    <section class="page">
-        <div class="content-wrapper">
-            <h3>Kunci Jawaban dan Pembahasan Latihan Soal: Matriks</h3>
+            
+            <h3 class="section-start">Kunci Jawaban dan Pembahasan Latihan Soal: Matriks</h3>
             <div class="pembahasan"><b>1. Jawaban: B</b><br><b>Teori Dasar:</b> Soal ini mencari pola dari perpangkatan matriks. Pola sering ditemukan pada matriks-matriks khusus.<br><b>Langkah-langkah:</b>
                 <br>1. Hitung $A^2$: $A^2 = \begin{pmatrix}1&1\\0&1\end{pmatrix}\begin{pmatrix}1&1\\0&1\end{pmatrix} = \begin{pmatrix}1\cdot1+1\cdot0 & 1\cdot1+1\cdot1 \\ 0\cdot1+1\cdot0 & 0\cdot1+1\cdot1\end{pmatrix} = \begin{pmatrix}1&2\\0&1\end{pmatrix}$.
                 <br>2. Hitung $A^3$: $A^3 = A^2 A = \begin{pmatrix}1&2\\0&1\end{pmatrix}\begin{pmatrix}1&1\\0&1\end{pmatrix} = \begin{pmatrix}1&1+2\\0&1\end{pmatrix} = \begin{pmatrix}1&3\\0&1\end{pmatrix}$.
@@ -582,49 +559,34 @@
                 <br>4. $P = \begin{pmatrix}1(25)+(-1)(17)\\-1(25)+2(17)\end{pmatrix} = \begin{pmatrix}25-17\\-25+34\end{pmatrix} = \begin{pmatrix}8\\9\end{pmatrix}$.
                 <br>5. Ubah angka kembali ke huruf: 8 adalah 'H', 9 adalah 'I'. Pesan aslinya "HI".
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- KONTEN LENGKAP UNTUK TOPIK 2-7 akan ditambahkan di sini dengan format yang sama -->
-    <section id="polinomial" class="page">
-      <div class="content-wrapper">
-        <h2>Topik 2: Polinomial</h2>
-        <!-- Konten Polinomial Lengkap -->
-      </div>
-    </section>
-    <section id="fungsi" class="page">
-       <div class="content-wrapper">
-        <h2>Topik 3: Fungsi</h2>
-        <!-- Konten Fungsi Lengkap -->
-       </div>
-    </section>
-    <section id="vektor" class="page">
-       <div class="content-wrapper">
-        <h2>Topik 4: Vektor</h2>
-        <!-- Konten Vektor Lengkap -->
-       </div>
-    </section>
-    <section id="lingkaran" class="page">
-       <div class="content-wrapper">
-        <h2>Topik 5: Lingkaran</h2>
-        <!-- Konten Lingkaran Lengkap -->
-       </div>
-    </section>
-    <section id="transformasi" class="page">
-       <div class="content-wrapper">
-        <h2>Topik 6: Transformasi Geometri</h2>
-        <!-- Konten Transformasi Geometri Lengkap -->
-       </div>
-    </section>
-    <section id="limit" class="page">
-       <div class="content-wrapper">
-        <h2>Topik 7: Limit</h2>
-        <!-- Konten Limit Lengkap -->
-       </div>
-    </section>
+        <!-- KONTEN LENGKAP UNTUK TOPIK 2-7 akan ditambahkan di sini dengan format yang sama -->
+        <section id="polinomial" class="section-start">
+          <h2>Topik 2: Polinomial</h2>
+          <p>(Konten untuk Polinomial akan muncul di sini)</p>
+        </section>
+        <section id="fungsi" class="section-start">
+            <h2>Topik 3: Fungsi</h2>
+            <p>(Konten untuk Fungsi akan muncul di sini)</p>
+        </section>
+        <section id="vektor" class="section-start">
+            <h2>Topik 4: Vektor</h2>
+            <p>(Konten untuk Vektor akan muncul di sini)</p>
+        </section>
+        <section id="lingkaran" class="section-start">
+            <h2>Topik 5: Lingkaran</h2>
+            <p>(Konten untuk Lingkaran akan muncul di sini)</p>
+        </section>
+        <section id="transformasi" class="section-start">
+            <h2>Topik 6: Transformasi Geometri</h2>
+            <p>(Konten untuk Transformasi Geometri akan muncul di sini)</p>
+        </section>
+        <section id="limit" class="section-start">
+            <h2>Topik 7: Limit</h2>
+            <p>(Konten untuk Limit akan muncul di sini)</p>
+        </section>
+    </div> <!-- Akhir dari #book-content -->
 </div>
-</div>
-
 </body>
 </html>
-
