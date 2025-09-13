@@ -40,6 +40,9 @@
             background-color: #e0e0e0;
             margin: 0;
             padding: 0;
+        }
+
+        .book-container {
             counter-reset: page;
         }
 
@@ -52,7 +55,7 @@
             position: relative;
         }
         
-        .page::after {
+        .page-content::after {
             counter-increment: page;
             content: counter(page);
             position: absolute;
@@ -72,10 +75,6 @@
             height: 250mm;
         }
         
-        .cover-page::after, .toc-page::after {
-            content: ''; /* No page number on cover and TOC */
-        }
-
         .cover-page img {
             max-width: 300px;
             margin-bottom: 40px;
@@ -110,18 +109,22 @@
                 background: none;
             }
             .page {
-                width: 100%;
+                width: auto;
                 height: auto;
                 min-height: 0;
                 margin: 0;
                 box-shadow: none;
+                break-after: page;
             }
-            h2 {
+            .cover-page, .toc-page {
+                break-after: page;
+            }
+             h2 {
                 break-before: page;
             }
         }
         
-        .watermark-container .page::before {
+        .watermark-container .page-content::before {
             content: '';
             background-image: url('https://imgix3.ruangguru.com/assets/miscellaneous/png_tiy3nf_6017.png');
             background-repeat: no-repeat;
@@ -136,10 +139,6 @@
             opacity: 0.08;
             z-index: 0;
             pointer-events: none;
-        }
-        
-        .cover-page::before, .toc-page::before {
-            opacity: 0;
         }
 
         .content-wrapper {
@@ -169,6 +168,13 @@
             color: #222;
             margin-top: 30px;
             font-weight: 700;
+            break-before: always;
+            padding-top: 1em;
+        }
+        
+        h3:first-of-type {
+            break-before: auto;
+            padding-top: 0;
         }
 
         h4 {
@@ -178,10 +184,25 @@
         }
 
         .toc-list { list-style-type: none; padding: 0; }
-        .toc-list li { margin-bottom: 10px; font-size: 12pt; }
-        .toc-list a { text-decoration: none; color: var(--primary-text); }
+        .toc-list li { 
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px; 
+            font-size: 12pt; 
+        }
+        .toc-list a { 
+            text-decoration: none; 
+            color: var(--primary-text); 
+        }
         .toc-list a:hover { text-decoration: underline; }
-        
+        .toc-list span.dots {
+            flex-grow: 1;
+            border-bottom: 1px dotted #999;
+            margin: 0 5px;
+            position: relative;
+            bottom: 4px;
+        }
+
         .layout-1-kolom { columns: 1; }
         .latihan-item { display: grid; grid-template-columns: 1fr 0.8fr; gap: 20px; border-top: 1px dashed var(--border-color); padding-top: 15px; margin-top: 15px; break-inside: avoid; }
 
@@ -198,7 +219,10 @@
         
         .pembahasan { background-color: #f9f9f9; border: 1px solid var(--border-color); padding: 15px; border-radius: 5px; margin-top: 10px; break-inside: avoid; }
         .pembahasan p {
-            margin-bottom: 1em; /* Spasi antar langkah */
+            margin-bottom: 1.2em;
+        }
+        .pembahasan p:last-child {
+            margin-bottom: 0;
         }
         
         .kumpulan-pembahasan h3{ text-align: center; }
@@ -234,7 +258,7 @@
 </head>
 <body>
 
-<div class="watermark-container">
+<div class="book-container">
 
     <!-- Cover Page -->
     <section class="page cover-page">
@@ -250,19 +274,20 @@
         <div class="content-wrapper">
             <h1>Daftar Isi</h1>
             <ul class="toc-list">
-                <li><a href="#matriks">Topik 1: Matriks</a></li>
-                <li><a href="#polinomial">Topik 2: Polinomial</a></li>
-                <li><a href="#fungsi">Topik 3: Fungsi</a></li>
-                <li><a href="#vektor">Topik 4: Vektor</a></li>
-                <li><a href="#lingkaran">Topik 5: Lingkaran</a></li>
-                <li><a href="#transformasi">Topik 6: Transformasi Geometri</a></li>
-                <li><a href="#limit">Topik 7: Limit</a></li>
+                <li><a href="#matriks">Topik 1: Matriks</a><span class="dots"></span><span>3</span></li>
+                <li><a href="#polinomial">Topik 2: Polinomial</a><span class="dots"></span><span>11</span></li>
+                <li><a href="#fungsi">Topik 3: Fungsi</a><span class="dots"></span><span>19</span></li>
+                <li><a href="#vektor">Topik 4: Vektor</a><span class="dots"></span><span>27</span></li>
+                <li><a href="#lingkaran">Topik 5: Lingkaran</a><span class="dots"></span><span>35</span></li>
+                <li><a href="#transformasi">Topik 6: Transformasi Geometri</a><span class="dots"></span><span>43</span></li>
+                <li><a href="#limit">Topik 7: Limit</a><span class="dots"></span><span>51</span></li>
             </ul>
         </div>
     </section>
 
     <!-- Topik 1: Matriks -->
-    <section id="matriks" class="page">
+    <div id="matriks">
+    <section class="page page-content">
       <div class="content-wrapper">
         <h2>Topik 1: Matriks</h2>
         <h3>1. Materi Singkat</h3>
@@ -302,7 +327,7 @@
       </div>
     </section>
 
-    <section class="page">
+    <section class="page page-content">
         <div class="content-wrapper">
             <h3>2. Contoh Soal</h3>
             <div class="layout-1-kolom">
@@ -359,7 +384,7 @@
         </div>
     </section>
 
-    <section class="page">
+    <section class="page page-content">
         <div class="content-wrapper">
              <div class="layout-1-kolom">
                  <div class="soal-item">
@@ -470,7 +495,7 @@
         </div>
     </section>
 
-    <section class="page">
+    <section class="page page-content">
         <div class="content-wrapper">
             <h3>3. Latihan Soal</h3>
             <p>Kerjakan soal-soal berikut. Gunakan kolom di sebelah kanan untuk corat-coret.</p>
@@ -483,7 +508,7 @@
             </div>
     </section>
     
-    <section class="page">
+    <section class="page page-content">
         <div class="content-wrapper">
             <div class="layout-latihan">
                 <div class="latihan-item"><div class="soal-latihan"><div class="keterangan-soal">Level: Penalaran | Tipe: Pilihan Ganda</div><b>6.</b> Diberikan matriks $P$ dan $Q$ berordo $2 \times 2$. Jika $PQ=\begin{pmatrix}1&0\\0&1\end{pmatrix}$, maka...<div class="pilihan-ganda-container"><ol class="pilihan-ganda"><li data-option="A">$P$ adalah invers dari $Q$</li><li data-option="B">$Q$ adalah invers dari $P$</li><li data-option="C">$P=Q^{-1}$</li><li data-option="D">$QP=I$</li><li data-option="E">Semua jawaban benar</li></ol></div></div><div class="coret-coret"></div></div>
@@ -507,7 +532,7 @@
         </div>
     </section>
         
-    <section class="page">
+    <section class="page page-content">
         <div class="content-wrapper">
             <h3>Kunci Jawaban dan Pembahasan Latihan Soal: Matriks</h3>
             <div class="pembahasan"><b>1. Jawaban: B</b><p><b>Teori Dasar:</b> Soal ini mencari pola dari perpangkatan matriks. Pola sering ditemukan pada matriks-matriks khusus.</p><p><b>Langkah 1: Hitung $A^2$.</b><br>$A^2 = \begin{pmatrix}1&1\\0&1\end{pmatrix}\begin{pmatrix}1&1\\0&1\end{pmatrix} = \begin{pmatrix}1\cdot1+1\cdot0 & 1\cdot1+1\cdot1 \\ 0\cdot1+1\cdot0 & 0\cdot1+1\cdot1\end{pmatrix} = \begin{pmatrix}1&2\\0&1\end{pmatrix}$.</p><p><b>Langkah 2: Hitung $A^3$.</b><br>$A^3 = A^2 A = \begin{pmatrix}1&2\\0&1\end{pmatrix}\begin{pmatrix}1&1\\0&1\end{pmatrix} = \begin{pmatrix}1&1+2\\0&1\end{pmatrix} = \begin{pmatrix}1&3\\0&1\end{pmatrix}$.</p><p><b>Langkah 3: Amati pola yang terbentuk.</b><br> $A^n=\begin{pmatrix}1&n\\0&1\end{pmatrix}$.</p><p><b>Langkah 4: Terapkan pola untuk $n=2024$.</b><br> $A^{2024}=\begin{pmatrix}1&2024\\0&1\end{pmatrix}$.</p></div>
@@ -516,10 +541,10 @@
             <div class="pembahasan"><b>4. Jawaban: B</b><p><b>Teori Dasar:</b> Soal cerita ini dapat dimodelkan menjadi sistem pertidaksamaan linear yang kemudian diubah ke dalam bentuk matriks. "Stok yang tersedia" mengimplikasikan batas atas, sehingga menggunakan tanda "kurang dari atau sama dengan" ($\le$).</p><p><b>Langkah 1: Buat persamaan untuk nastar.</b><br>Setiap Paket A butuh 3 nastar dan Paket B butuh 1. Total nastar adalah $3x+y$. Karena stok 120, maka $3x+y \le 120$.</p><p><b>Langkah 2: Buat persamaan untuk kastengel.</b><br>Setiap Paket A butuh 2 kastengel dan Paket B butuh 3. Total kastengel adalah $2x+3y$. Karena stok 110, maka $2x+3y \le 110$.</p><p><b>Langkah 3: Susun ke dalam bentuk matriks.</b><br> Koefisien $x$ dan $y$ menjadi matriks koefisien. $\begin{pmatrix}3&1\\2&3\end{pmatrix}\begin{pmatrix}x\\y\end{pmatrix} \le \begin{pmatrix}120\\110\end{pmatrix}$.</p></div>
             <div class="pembahasan"><b>5. Jawaban: A, B, D</b><p><b>Teori Dasar:</b> Matriks yang kuadratnya menghasilkan identitas ($M^2=I$) disebut matriks involutori.</p><p><b>Langkah 1: Periksa setiap pilihan.</b><br>A. $\begin{pmatrix}0&1\\1&0\end{pmatrix}\begin{pmatrix}0&1\\1&0\end{pmatrix}=\begin{pmatrix}1&0\\0&1\end{pmatrix}$. Benar.<br>B. $\begin{pmatrix}-1&0\\0&-1\end{pmatrix}\begin{pmatrix}-1&0\\0&-1\end{pmatrix}=\begin{pmatrix}1&0\\0&1\end{pmatrix}$. Benar.<br>C. $\begin{pmatrix}1&1\\0&1\end{pmatrix}\begin{pmatrix}1&1\\0&1\end{pmatrix}=\begin{pmatrix}1&2\\0&1\end{pmatrix}$. Salah.<br>D. $I \cdot I = I$. Benar.<br>E. $\begin{pmatrix}0&-1\\1&0\end{pmatrix}\begin{pmatrix}0&-1\\1&0\end{pmatrix}=\begin{pmatrix}-1&0\\0&-1\end{pmatrix}$. Salah.</p></div>
             <div class="pembahasan"><b>6. Jawaban: E</b><p><b>Teori Dasar:</b> Definisi invers matriks $A^{-1}$ adalah matriks yang jika dikalikan dengan $A$ menghasilkan matriks identitas $I$. Untuk matriks persegi, jika $PQ=I$, maka otomatis $QP=I$.</p><p><b>Analisis:</b><br>Jika $PQ=I$, maka $P$ adalah invers dari $Q$ ($P=Q^{-1}$) dan $Q$ adalah invers dari $P$ ($Q=P^{-1}$). Dari sini, pernyataan A, B, dan C benar. Karena $PQ=I$, maka $Q$ adalah invers kanan dari $P$. Untuk matriks persegi, invers kanan juga merupakan invers kiri, sehingga $QP=I$ juga pasti benar. Jadi, semua pernyataan benar.</p></div>
-             <div class="pembahasan"><b>7. Jawaban: A</b><p><b>Teori Dasar:</b> Luas segitiga dengan titik-titik yang diketahui dapat dihitung menggunakan determinan matriks $3 \times 3$.</p><p><b>Langkah 1: Susun matriks.</b><br> $\begin{pmatrix} 1 & 1 & 1 \\ 4 & 2 & 1 \\ 2 & 5 & 1 \end{pmatrix}$.</p><p><b>Langkah 2: Hitung determinan (Sarrus).</b><br> $\det = (1\cdot2\cdot1 + 1\cdot1\cdot2 + 1\cdot4\cdot5) - (1\cdot2\cdot2 + 1\cdot1\cdot5 + 1\cdot4\cdot1) = (2+2+20) - (4+5+4) = 24 - 13 = 11$.</p><p><b>Langkah 3: Hitung Luas.</b><br> Luas $= \frac{1}{2}|\det| = \frac{1}{2}|11| = 5.5$.</p></div>
+             <div class="pembahasan"><b>7. Jawaban: A</b><p><b>Teori Dasar:</b> Luas segitiga dengan titik-titik yang diketahui dapat dihitung menggunakan determinan matriks $3 \times 3$.</p><p><b>Langkah 1: Susun matriks.</b><br> $\begin{pmatrix} 1 & 1 & 1 \\ 4 & 2 & 1 \\ 2 & 5 & 1 \end{pmatrix}$.</p><p><b>Langkah 2: Hitung determinan (Sarrus).</b><br> $$ \begin{align*} \det &= (1\cdot2\cdot1 + 1\cdot1\cdot2 + 1\cdot4\cdot5) \\ & \quad - (1\cdot2\cdot2 + 1\cdot1\cdot5 + 1\cdot4\cdot1) \\ &= (2+2+20) - (4+5+4) \\ &= 24 - 13 = 11 \end{align*} $$</p><p><b>Langkah 3: Hitung Luas.</b><br> Luas $= \frac{1}{2}|\det| = \frac{1}{2}|11| = 5.5$.</p></div>
              <div class="pembahasan"><b>8. Jawaban: D</b><p><b>Teori Dasar:</b> Menggunakan sifat determinan $|kA| = k^n |A|$, di mana $n$ adalah ordo matriks.</p><p><b>Langkah 1: Identifikasi variabel.</b><br> $A$ berordo $3 \times 3$, maka $n=3$. Skalar $k=-2$.</p><p><b>Langkah 2: Terapkan rumus.</b><br> $|-2A| = (-2)^3 |A| = -8 \times (-3) = 24$.</p></div>
              <div class="pembahasan"><b>9. Jawaban: D</b><p><b>Teori Dasar:</b> Soal ini menguji pemahaman tentang kondisi kapan perkalian matriks bersifat komutatif ($AB=BA$).</p><p><b>Langkah 1: Analisis Pernyataan (1).</b><br> Jika $A$ kelipatan dari $B$, maka $A=kB$ untuk suatu skalar $k$. $AB = (kB)B = kB^2$. $BA=B(kB)=k(BB)=kB^2$. Jadi $AB=BA$. Pernyataan (1) SAJA cukup.</p><p><b>Langkah 2: Analisis Pernyataan (2).</b><br> Jika $B$ adalah matriks identitas ($B=I$), maka $AI = A$ dan $IA=A$. Jadi $AB=BA$. Pernyataan (2) SAJA cukup.</p><p><b>Kesimpulan:</b> Karena pernyataan (1) SAJA cukup dan (2) SAJA cukup, maka jawabannya adalah D.</p></div>
-             <div class="pembahasan"><b>10. Jawaban: C</b><p><b>Teori Dasar:</b> Menghitung determinan matriks $3 \times 3$ menggunakan Aturan Sarrus.</p><p><b>Langkah 1: Hitung determinan.</b><br>$\det(B) = [1(4)(-5) + 1(-3)(3) + 2(2)(6)] - [2(4)(3) + 1(-3)(6) + 1(2)(-5)]$<br>$= [-20 - 9 + 24] - [24 - 18 - 10]$<br>$= [-5] - [-4] = -5 + 4 = -1$.</p></div>
+             <div class="pembahasan"><b>10. Jawaban: C</b><p><b>Teori Dasar:</b> Menghitung determinan matriks $3 \times 3$ menggunakan Aturan Sarrus.</p><p><b>Langkah 1: Hitung determinan.</b><br>$$ \begin{align*} \det(B) &= [1(4)(-5) + 1(-3)(3) + 2(2)(6)] \\ & \quad - [2(4)(3) + 1(-3)(6) + 1(2)(-5)] \\ &= [-20 - 9 + 24] - [24 - 18 - 10] \\ &= [-5] - [-4] = -5 + 4 = -1 \end{align*} $$</p></div>
              <div class="pembahasan"><b>11. Jawaban: B</b><p><b>Teori Dasar:</b> Jika $A^2=0$, kita bisa mengambil determinan dari kedua sisi untuk mengetahui properti dari $A$.</p><p><b>Langkah 1: Ambil determinan kedua sisi.</b><br> $A^2 = 0 \implies \det(A^2) = \det(0)$.</p><p><b>Langkah 2: Gunakan sifat determinan.</b><br> $\det(A \cdot A) = 0 \implies \det(A) \cdot \det(A) = 0 \implies (\det(A))^2 = 0$.</p><p><b>Langkah 3: Simpulkan.</b><br> Maka, $\det(A)=0$. Matriks dengan determinan nol tidak memiliki invers (disebut juga matriks singular). Pilihan A salah, karena $A=\begin{pmatrix}0&1\\0&0\end{pmatrix}$ tidak nol tapi $A^2=0$.</p></div>
              <div class="pembahasan"><b>12. Jawaban: Benar, Salah, Salah</b><p><b>Teori Dasar:</b> Mengubah soal cerita menjadi sistem persamaan linear dan menyelesaikannya menggunakan matriks.</p><p><b>Pernyataan 1:</b> Sistem persamaan: $2x+4y=20$ (total jam M1) dan $3x+y=15$ (total jam M2). Pernyataan ini <b>Benar</b>.</p><p><b>Pernyataan 2:</b> Matriks koefisien $A=\begin{pmatrix}2&4\\3&1\end{pmatrix}$. $\det(A) = 2(1)-4(3) = 2-12 = -10$. Pernyataan "Determinannya adalah 10" berarti <b>Salah</b>.</p><p><b>Pernyataan 3:</b> Menyelesaikan SPL. Dari persamaan kedua, $y=15-3x$. Substitusi ke persamaan pertama: $2x+4(15-3x)=20 \implies 2x+60-12x=20 \implies -10x=-40 \implies x=4$. Maka $y=15-3(4)=3$. Jumlah produk P2 ($y$) yang diproduksi adalah 3, bukan 4. Pernyataan ini <b>Salah</b>.</p></div>
             <div class="pembahasan"><b>13. Jawaban: B</b><p><b>Teori Dasar:</b> Persamaan $XA=I$ berarti $X$ adalah invers dari $A$, yaitu $X=A^{-1}$.</p><p><b>Langkah 1: Cari determinan $A=\begin{pmatrix} 2 & 1 \\ 5 & 3 \end{pmatrix}$.</b><br> $\det(A) = 2(3)-1(5)=6-5=1$.</p><p><b>Langkah 2: Hitung inversnya.</b><br> $X = A^{-1} = \frac{1}{1}\begin{pmatrix}3&-1\\-5&2\end{pmatrix} = \begin{pmatrix}3&-1\\-5&2\end{pmatrix}$.</p></div>
