@@ -116,15 +116,12 @@
                 box-shadow: none;
                 break-after: page;
             }
-            .cover-page, .toc-page {
-                break-after: page;
-            }
-             h2 {
+            h2 {
                 break-before: page;
             }
         }
         
-        .watermark-container .page-content::before {
+        .page-content::before {
             content: '';
             background-image: url('https://imgix3.ruangguru.com/assets/miscellaneous/png_tiy3nf_6017.png');
             background-repeat: no-repeat;
@@ -168,13 +165,16 @@
             color: #222;
             margin-top: 30px;
             font-weight: 700;
-            break-before: always;
             padding-top: 1em;
         }
         
         h3:first-of-type {
-            break-before: auto;
             padding-top: 0;
+            margin-top: 0;
+        }
+        
+        .sub-section {
+            break-before: page;
         }
 
         h4 {
@@ -258,7 +258,7 @@
 </head>
 <body>
 
-<div class="book-container">
+<div class="book-container watermark-container">
 
     <!-- Cover Page -->
     <section class="page cover-page">
@@ -329,7 +329,7 @@
 
     <section class="page page-content">
         <div class="content-wrapper">
-            <h3>2. Contoh Soal</h3>
+            <h3 class="sub-section">2. Contoh Soal</h3>
             <div class="layout-1-kolom">
                 <div class="soal-item">
                     <div class="keterangan-soal">Level: Aplikasi | Tipe: Pilihan Ganda</div>
@@ -380,13 +380,6 @@
                         <b>Jawaban yang benar adalah A.</b></p>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="page page-content">
-        <div class="content-wrapper">
-             <div class="layout-1-kolom">
                  <div class="soal-item">
                     <div class="keterangan-soal">Level: Penalaran | Tipe: Kecukupan Data</div>
                     <b>Soal 3.</b> Diberikan sistem persamaan linear $ax+by=1$ dan $cx+dy=0$. Apakah sistem ini memiliki solusi unik?
@@ -410,6 +403,13 @@
                         <b>Jawaban yang benar adalah D.</b></p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="page page-content">
+        <div class="content-wrapper">
+             <div class="layout-1-kolom">
                 <div class="soal-item">
                      <div class="keterangan-soal">Level: Penalaran | Tipe: Pilihan Ganda Kompleks</div>
                     <b>Soal 4.</b> Diketahui matriks $A$ berordo $2 \times 2$ dengan $|A|=2$. Manakah pernyataan berikut yang PASTI benar? <b>(bisa pilih lebih dari satu jawaban)</b>
@@ -497,7 +497,7 @@
 
     <section class="page page-content">
         <div class="content-wrapper">
-            <h3>3. Latihan Soal</h3>
+            <h3 class="sub-section">3. Latihan Soal</h3>
             <p>Kerjakan soal-soal berikut. Gunakan kolom di sebelah kanan untuk corat-coret.</p>
             <div class="layout-latihan">
                 <div class="latihan-item"><div class="soal-latihan"><div class="keterangan-soal">Level: Pengetahuan & Pemahaman | Tipe: Pilihan Ganda</div><b>1.</b> Diketahui $A=\begin{pmatrix}1&1\\0&1\end{pmatrix}$. Nilai dari $A^{2024}$ adalah... <div class="pilihan-ganda-container"><ol class="pilihan-ganda"><li data-option="A">$\begin{pmatrix}1&1\\0&1\end{pmatrix}$</li><li data-option="B">$\begin{pmatrix}1&2024\\0&1\end{pmatrix}$</li><li data-option="C">$\begin{pmatrix}1&2024\\2024&1\end{pmatrix}$</li><li data-option="D">$\begin{pmatrix}2024&2024\\0&2024\end{pmatrix}$</li><li data-option="E">$\begin{pmatrix}1&0\\0&1\end{pmatrix}$</li></ol></div></div><div class="coret-coret"></div></div>
@@ -534,7 +534,7 @@
         
     <section class="page page-content">
         <div class="content-wrapper">
-            <h3>Kunci Jawaban dan Pembahasan Latihan Soal: Matriks</h3>
+            <h3 class="sub-section">Kunci Jawaban dan Pembahasan Latihan Soal: Matriks</h3>
             <div class="pembahasan"><b>1. Jawaban: B</b><p><b>Teori Dasar:</b> Soal ini mencari pola dari perpangkatan matriks. Pola sering ditemukan pada matriks-matriks khusus.</p><p><b>Langkah 1: Hitung $A^2$.</b><br>$A^2 = \begin{pmatrix}1&1\\0&1\end{pmatrix}\begin{pmatrix}1&1\\0&1\end{pmatrix} = \begin{pmatrix}1\cdot1+1\cdot0 & 1\cdot1+1\cdot1 \\ 0\cdot1+1\cdot0 & 0\cdot1+1\cdot1\end{pmatrix} = \begin{pmatrix}1&2\\0&1\end{pmatrix}$.</p><p><b>Langkah 2: Hitung $A^3$.</b><br>$A^3 = A^2 A = \begin{pmatrix}1&2\\0&1\end{pmatrix}\begin{pmatrix}1&1\\0&1\end{pmatrix} = \begin{pmatrix}1&1+2\\0&1\end{pmatrix} = \begin{pmatrix}1&3\\0&1\end{pmatrix}$.</p><p><b>Langkah 3: Amati pola yang terbentuk.</b><br> $A^n=\begin{pmatrix}1&n\\0&1\end{pmatrix}$.</p><p><b>Langkah 4: Terapkan pola untuk $n=2024$.</b><br> $A^{2024}=\begin{pmatrix}1&2024\\0&1\end{pmatrix}$.</p></div>
              <div class="pembahasan"><b>2. Jawaban: A</b><p><b>Teori Dasar:</b> Matriks singular adalah matriks persegi yang tidak memiliki invers. Ini terjadi jika dan hanya jika determinannya bernilai nol.</p><p><b>Langkah 1: Susun persamaan determinan.</b><br> $\det(A) = 0$.</p><p><b>Langkah 2: Hitung determinan matriks A.</b><br> $(2x)(3x-2) - (-2)(x) = 0$.</p><p><b>Langkah 3: Selesaikan persamaan kuadrat.</b><br> $6x^2 - 4x + 2x = 0 \implies 6x^2 - 2x = 0$.</p><p><b>Langkah 4: Faktorkan.</b><br> $2x(3x-1) = 0$.</p><p><b>Langkah 5: Temukan akar-akarnya.</b><br> $x_1=0$ dan $x_2=1/3$.</p><p><b>Langkah 6: Jumlahkan akar-akarnya.</b><br> $0 + 1/3 = 1/3$.</p></div>
             <div class="pembahasan"><b>3. Jawaban: E</b><p><b>Teori Dasar:</b> Matriks memiliki invers jika determinannya tidak nol. Soal ini menguji kemampuan menganalisis kasus-kasus yang mungkin.</p><p><b>Langkah 1: Analisis Pernyataan (1).</b><br> $A^2=A$. Dengan mengambil determinan kedua sisi, kita dapatkan $|A^2|=|A| \implies |A|^2=|A| \implies |A|^2-|A|=0 \implies |A|(|A|-1)=0$. Ini berarti $|A|=0$ atau $|A|=1$. Karena ada kemungkinan $|A|=0$, kita tidak bisa memastikan $A$ punya invers. (1) SAJA tidak cukup.</p><p><b>Langkah 2: Analisis Pernyataan (2).</b><br> $A \neq 0$ tidak memberikan informasi apa pun tentang determinan. Contoh: $\begin{pmatrix}1&0\\0&0\end{pmatrix}$ tidak nol tapi singular. $\begin{pmatrix}1&0\\0&1\end{pmatrix}$ tidak nol dan non-singular. (2) SAJA tidak cukup.</p><p><b>Langkah 3: Analisis (1) dan (2) Bersama.</b><br> Kita masih memiliki dua kemungkinan dari (1), yaitu $|A|=0$ atau $|A|=1$. Pernyataan (2) tidak menghilangkan salah satu kemungkinan ini. Contoh $A=I$ memenuhi (1) dan (2) dengan $|A|=1$. Contoh $A=\begin{pmatrix}1&0\\0&0\end{pmatrix}$ memenuhi (1) dan (2) dengan $|A|=0$. Karena masih ada dua kemungkinan, kedua pernyataan tidak cukup.</p></div>
